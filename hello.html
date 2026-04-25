@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>API Loading Example</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f2f2;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px gray;
+      text-align: center;
+    }
+
+    img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      font-size: 25px;
+      color: red;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Recipe Data</h1>
+
+  <div id="box" class="loading">Loading...</div>
+
+  <script>
+
+    async function getData() {
+
+      let box = document.getElementById("box");
+
+      let response = await fetch("https://dummyjson.com/recipes");
+
+      let data = await response.json();
+
+
+
+      box.innerHTML = "";
+
+      data.recipes.forEach(function (item) {
+
+        box.innerHTML += `
+            <div class="card">
+
+                <img src="${item.image}">
+
+                <h2>${item.name}</h2>
+/
+                <p>${item.cuisine}</p>
+
+                <p>⭐ ${item.rating}</p>
+
+            </div>
+        `;
+
+      });
+
+    }
+
+    getData();
+
+  </script>
+
+</body>
+
+</html>
