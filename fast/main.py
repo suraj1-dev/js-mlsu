@@ -56,24 +56,20 @@ def update_todo(todo_id: int, updated_todo: Todo):
 
     }
 
-
 @app.delete("/todos/{todo_id}")
 def delete_todo(todo_id: int):
 
-    # check every todo
-    for todo in todos:
+    # check index exists or not
+    if todo_id >= len(todos):
 
-        # if id matches
-        if todo["id"] == todo_id:
+        return {
+            "error": "Todo not found"
+        }
 
-            # remove todo
-            todos.remove(todo)
-
-            return {
-                "message": "Todo deleted",
-                "data": todo
-            }
+    # delete todo using index
+    deleted_todo = todos.pop(todo_id)
 
     return {
-        "error": "Todo not found"
-    }    
+        "message": "Todo deleted",
+        "data": deleted_todo
+    } 
