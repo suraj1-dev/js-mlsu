@@ -1,75 +1,127 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
-# Fake database
-todos = []
 
-# Request Body Model
+# ----------------------------
+# Models
+# ----------------------------
 
-class Todo(BaseModel):
+class Question(BaseModel):
+    question: str
+    options: List[str]
+    correct_answer: str
 
+
+{
+   "title":"dghsrghsrhge",
+   "questions":[
+    {
+        "question" :"sfguhskj erghlsfkjgnsklg",
+        "options":["Sgs","sdfgewg","wefgsef","afaefqef"],
+        "correct_answer":"Sgs"
+    }
+   ] 
+}
+
+class Quiz(BaseModel):
     title: str
+    questions: List[Question]
 
-    completed: bool = False
 
-# POST Create Todo
-#todo = Todo(title="Learn FastAPI", completed=False)
-@app.post("/create-todos")
+class SubmitAnswer(BaseModel):
+    answers: List[str]
+# ----------------------------
+# Fake Database
+# ----------------------------
 
-def create_todo(todo: Todo):
-    todos.append(todo.dict())
+quizzes = []
+# ----------------------------
+# Create Quiz
+# ----------------------------
+
+@app.post("/quiz")
+def create_quiz(quiz: Quiz):
+    quiz_data = quiz.dict()
+    quiz_id = len(quizzes)
+
+    quizzes.append({
+        "id": quiz_id,
+        "title": quiz_data["title"],
+        "questions": quiz_data["questions"]
+    })
+
     return {
-        "message": "Todo created",
-        "data": todo
-    }    
-
-@app.get("/todos")
-
-def home():
-
-    return {
-
-        "message": "Todo API Running",
-        "all_todos": todos,
-        "total": len(todos)
-
+        "message": "Quiz created",
+        "quiz_id": quiz_id
     }
 
-    # PUT Update Todo
 
-@app.put("/todos/{todo_id}")
+# ----------------------------
+# Get All Quizzes
+# ----------------------------
 
-def update_todo(todo_id: int, updated_todo: Todo):
-#dbdfsbdf
-    if todo_id >= len(todos):
+@app.get("/quiz")
+def get_quizzes():
+    return quizzes
 
-        return {"error": "Todo not found"}
 
-    todos[todo_id] = updated_todo.dict()
+# ----------------------------
+# Get Single Quiz
+# ----------------------------
+
+@app.get("/quiz/{quiz_id}")
+def get_quiz(quiz_id: int):
+
+    if quiz_id >= len(quizzes):
+        raise HTTPException(status_code=404, detail="Quiz not found")
+
+    return quizzes[quiz_id]
+
+
+# ----------------------------
+# Submit Answers
+# ----------------------------
+
+@app.post("/quiz/{quiz_id}/submit")
+def submit_quiz(quiz_id: int, data: SubmitAnswer):
+
+    if quiz_id >= len(quizzes):
+        raise HTTPException(status_code=404, detail="Quiz not found")
+
+    quiz = quizzes[quiz_id]
+
+    questions = quiz["questions"]
+
+    score = 0
+
+    for i in range(len(questions)):
+
+        correct = questions[i]["correct_answer"]
+
+        if i < len(data.answers) and data.answers[i] == correct:
+            score += 1
 
     return {
-
-        "message": "Todo updated",
-
-        "data": todos[todo_id]
-
+        "quiz_title": quiz["title"],
+        "total_questions": len(questions),
+        "score": score
     }
 
-@app.delete("/todos/{todo_id}")
-def delete_todo(todo_id: int):
 
-    # check index exists or not
-    if todo_id >= len(todos):
-
-        return {
-            "error": "Todo not found"
-        }
-
-    # delete todo using index
-    deleted_todo = todos.pop(todo_id)
-
-    return {
-        "message": "Todo deleted",
-        "data": deleted_todo
-    } 
+    {
+  "title": "Python Quiz",
+  "questions": [
+    {
+      "question": "What is Python?",
+      "options": ["Language", "Car", "Phone", "Game"],
+      "correct_answer": "Language"
+    },
+    {
+      "question": "Which keyword is used for function?",
+      "options": ["fun", "define", "def", "func"],
+      "correct_answer": "def"
+    }
+  ]
+}
