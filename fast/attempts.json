@@ -1,0 +1,170 @@
+[
+    {
+        "attempt_id": 1,
+        "quiz_id": 2,
+        "title": "FastAPI Fundamentals Quiz",
+        "topic": "python fast api",
+        "difficulty": "Easy",
+        "score": 5,
+        "total": 5,
+        "percentage": 100.0,
+        "feedback": "Wow, a perfect 5/5 on the FastAPI Fundamentals Quiz! That's absolutely",
+        "timestamp": "2026-05-21 09:33:46",
+        "results": [
+            {
+                "id": 1,
+                "question": "What is FastAPI primarily known for?",
+                "options": [
+                    "A web framework for building front-end interfaces.",
+                    "A database management system for Python.",
+                    "A modern, fast web framework for building APIs with Python 3.7+.",
+                    "A tool for data analysis and visualization."
+                ],
+                "user_answer": "A modern, fast web framework for building APIs with Python 3.7+.",
+                "correct_answer": "A modern, fast web framework for building APIs with Python 3.7+.",
+                "is_correct": true,
+                "explanation": "FastAPI is specifically designed for building web APIs, leveraging modern Python features like type hints to provide high performance and developer experience."
+            },
+            {
+                "id": 2,
+                "question": "Which decorator is commonly used in FastAPI to define a GET request path operation?",
+                "options": [
+                    "@app.post()",
+                    "@app.get()",
+                    "@app.put()",
+                    "@app.route('/get')"
+                ],
+                "user_answer": "@app.get()",
+                "correct_answer": "@app.get()",
+                "is_correct": true,
+                "explanation": "The `@app.get()` decorator is used to declare a path operation that handles HTTP GET requests to a specific URL path in a FastAPI application."
+            },
+            {
+                "id": 3,
+                "question": "Which command-line tool is typically used to run a FastAPI application in development?",
+                "options": [
+                    "python main.py",
+                    "flask run",
+                    "uvicorn main:app --reload",
+                    "django runserver"
+                ],
+                "user_answer": "uvicorn main:app --reload",
+                "correct_answer": "uvicorn main:app --reload",
+                "is_correct": true,
+                "explanation": "Uvicorn is the ASGI server recommended and commonly used to serve FastAPI applications, with `--reload` enabling automatic reloading on code changes during development."
+            },
+            {
+                "id": 4,
+                "question": "What is the primary role of Pydantic in a FastAPI application?",
+                "options": [
+                    "To manage database connections.",
+                    "To handle user authentication.",
+                    "To provide data validation, serialization, and deserialization.",
+                    "To generate HTML templates."
+                ],
+                "user_answer": "To provide data validation, serialization, and deserialization.",
+                "correct_answer": "To provide data validation, serialization, and deserialization.",
+                "is_correct": true,
+                "explanation": "FastAPI uses Pydantic for data validation, serialization, and deserialization, allowing developers to define data models with type hints and ensuring data integrity for request bodies and response models."
+            },
+            {
+                "id": 5,
+                "question": "What is one of the key benefits of using FastAPI, especially regarding API documentation?",
+                "options": [
+                    "It requires manual creation of OpenAPI specifications.",
+                    "It automatically generates interactive API documentation (Swagger UI/ReDoc).",
+                    "It only supports generating documentation in Markdown format.",
+                    "It has no built-in support for API documentation."
+                ],
+                "user_answer": "It automatically generates interactive API documentation (Swagger UI/ReDoc).",
+                "correct_answer": "It automatically generates interactive API documentation (Swagger UI/ReDoc).",
+                "is_correct": true,
+                "explanation": "FastAPI automatically generates interactive API documentation based on the OpenAPI standard, providing Swagger UI and ReDoc interfaces out-of-the-box, which greatly simplifies API exploration and testing."
+            }
+        ]
+    },
+    {
+        "attempt_id": 2,
+        "quiz_id": 3,
+        "title": "Advanced Machine Learning Concepts Quiz",
+        "topic": "machine learning",
+        "difficulty": "Hard",
+        "score": 1,
+        "total": 5,
+        "percentage": 20.0,
+        "feedback": "Hey there, future machine learning wizard! Wow, you just tackled an 'Advanced Machine",
+        "timestamp": "2026-05-21 09:38:17",
+        "results": [
+            {
+                "id": 1,
+                "question": "In Support Vector Machines (SVMs), what is the primary purpose of the 'kernel trick'?",
+                "options": [
+                    "To reduce the dimensionality of the input features.",
+                    "To implicitly map data into a higher-dimensional space without explicitly computing the coordinates.",
+                    "To prevent overfitting by adding a penalty term to the loss function.",
+                    "To accelerate the gradient descent optimization process."
+                ],
+                "user_answer": "To accelerate the gradient descent optimization process.",
+                "correct_answer": "To implicitly map data into a higher-dimensional space without explicitly computing the coordinates.",
+                "is_correct": false,
+                "explanation": "The kernel trick allows SVMs to find non-linear decision boundaries by operating in a higher-dimensional feature space. It achieves this by computing the dot product of the transformed features directly, avoiding the computationally expensive explicit transformation of the data points themselves."
+            },
+            {
+                "id": 2,
+                "question": "Which of the following statements accurately describes the effect of increasing model complexity on the bias-variance trade-off in machine learning?",
+                "options": [
+                    "Increasing complexity always decreases both bias and variance.",
+                    "Increasing complexity generally decreases bias and increases variance.",
+                    "Increasing complexity generally increases bias and decreases variance.",
+                    "Increasing complexity has no predictable effect on bias or variance."
+                ],
+                "user_answer": "Increasing complexity generally increases bias and decreases variance.",
+                "correct_answer": "Increasing complexity generally decreases bias and increases variance.",
+                "is_correct": false,
+                "explanation": "More complex models have greater flexibility to fit the training data, leading to lower bias (better fit to the training data). However, this increased flexibility makes them more sensitive to the specific training data, leading to higher variance (poor generalization to unseen data)."
+            },
+            {
+                "id": 3,
+                "question": "Which technique is most commonly employed to mitigate the vanishing and exploding gradient problems in deep neural networks, particularly in recurrent neural networks (RNNs)?",
+                "options": [
+                    "Batch Normalization",
+                    "Dropout Regularization",
+                    "Gradient Clipping and Gated Recurrent Units (GRUs) or Long Short-Term Memory (LSTMs)",
+                    "L1 and L2 Regularization"
+                ],
+                "user_answer": "L1 and L2 Regularization",
+                "correct_answer": "Gradient Clipping and Gated Recurrent Units (GRUs) or Long Short-Term Memory (LSTMs)",
+                "is_correct": false,
+                "explanation": "Gradient clipping directly addresses exploding gradients by capping gradient values. GRUs and LSTMs, through their sophisticated gating mechanisms, are specifically designed to handle vanishing gradients by allowing gradients to flow more easily over long sequences, preserving long-term dependencies. While other options have roles in deep learning, they are not the primary or most direct solutions for both vanishing and exploding gradients in RNNs."
+            },
+            {
+                "id": 4,
+                "question": "In the context of Reinforcement Learning, what is the primary distinction between an 'on-policy' and an 'off-policy' learning algorithm?",
+                "options": [
+                    "On-policy algorithms learn from a fixed dataset, while off-policy algorithms learn through interaction with an environment.",
+                    "On-policy algorithms learn the value of the policy that is being used to act, while off-policy algorithms learn the value of a different (target) policy.",
+                    "On-policy algorithms use a model of the environment, while off-policy algorithms are model-free.",
+                    "On-policy algorithms are always deterministic, whereas off-policy algorithms are always stochastic."
+                ],
+                "user_answer": "On-policy algorithms learn the value of the policy that is being used to act, while off-policy algorithms learn the value of a different (target) policy.",
+                "correct_answer": "On-policy algorithms learn the value of the policy that is being used to act, while off-policy algorithms learn the value of a different (target) policy.",
+                "is_correct": true,
+                "explanation": "On-policy algorithms (e.g., SARSA) learn about the policy that is currently being executed to generate data and make decisions. Off-policy algorithms (e.g., Q-learning) learn about a target policy (often the optimal one) while following a different behavior policy to explore the environment, allowing for more flexible exploration strategies."
+            },
+            {
+                "id": 5,
+                "question": "When evaluating a classification model on a highly imbalanced dataset where the positive class is rare but critical to identify, which metric is generally most appropriate for assessing the model's performance?",
+                "options": [
+                    "Accuracy",
+                    "F1-Score",
+                    "Precision",
+                    "Recall"
+                ],
+                "user_answer": "Accuracy",
+                "correct_answer": "F1-Score",
+                "is_correct": false,
+                "explanation": "Accuracy can be highly misleading on imbalanced datasets as a model might achieve high accuracy by simply predicting the majority class. While Recall (sensitivity) is crucial for identifying critical rare positives and Precision (positive predictive value) is important to avoid too many false alarms, the F1-Score provides a harmonic mean of both precision and recall. This balance makes it a robust metric for assessing overall model performance on imbalanced datasets, ensuring the model is effective at both finding positive instances and doing so without an excessive number of false positives."
+            }
+        ]
+    }
+]
