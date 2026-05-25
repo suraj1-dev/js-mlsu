@@ -150,6 +150,7 @@ async def chat_voice(file: UploadFile = File(...)):
         except Exception as tts_err:
             print(f"TTS Synthesis error: {tts_err}")
             
+            #vgg
         return {
             "user_text": user_text,
             "response": ai_reply,
