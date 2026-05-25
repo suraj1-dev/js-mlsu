@@ -2,6 +2,7 @@
 import { TaskTable } from "@/components/task-table";
 import axios from "axios";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -54,6 +55,24 @@ export default function Home() {
 
   return (
     <div className="p-10">
+      <div className="flex justify-between items-center mb-8 border-b pb-4">
+        <h1 className="text-2xl font-bold">Demo Project</h1>
+        <div className="flex gap-4">
+          <Link
+            href="/gemini"
+            className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200"
+          >
+            Open Gemini Chat 🤖
+          </Link>
+          <Link
+            href="/voice"
+            className="bg-purple-600 hover:bg-purple-500 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200"
+          >
+            Open Gemini Voice 🎙️
+          </Link>
+        </div>
+      </div>
+
       <h1 className="text-2xl font-bold mb-5">Add Post</h1>
 
       <div className="flex flex-col gap-4 max-w-md">
