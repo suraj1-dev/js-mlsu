@@ -11,6 +11,7 @@ import threading
 import speech_recognition as sr
 import pyttsx3
 from gtts import gTTS
+from routers import pdf_rag
 
 # Load env variables
 load_dotenv()
@@ -20,6 +21,9 @@ app = FastAPI(
     description="FastAPI backend for LangChain Gemini Chatbot with Memory",
     version="1.0.0"
 )
+
+# Register RAG router
+app.include_router(pdf_rag.router)
 
 # Add CORS Middleware to support frontend requests
 app.add_middleware(
@@ -172,3 +176,4 @@ def clear_chat():
 @app.get("/")
 def root():
     return {"message": "Chat API is running!"}
+

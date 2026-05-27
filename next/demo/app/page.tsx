@@ -70,6 +70,12 @@ export default function Home() {
           >
             Open Gemini Voice 🎙️
           </Link>
+          <Link
+            href="/pdf-rag"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200"
+          >
+            Open PDF RAG 📄
+          </Link>
         </div>
       </div>
 
