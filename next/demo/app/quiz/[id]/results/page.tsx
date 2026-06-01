@@ -549,10 +549,10 @@ function ResultsContent() {
                 cx="70"
                 cy="70"
                 transform="rotate(-90 70 70)"
-                style={{
-                  strokeDashoffset,
-                  transition: "stroke-dashoffset 0.8s ease-in-out",
-                }}
+                // style={{
+                //   strokeDashoffset,
+                //   transition: "stroke-dashoffset 0.8s ease-in-out",
+                // }}
               />
             </svg>
             <div className="radial-percent-txt">

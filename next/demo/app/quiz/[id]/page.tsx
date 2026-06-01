@@ -7,7 +7,7 @@ import Link from "next/link";
 
 interface QuestionResponse {
   id: number;
-  question: str;
+  question: string;
   options: string[];
 }
 

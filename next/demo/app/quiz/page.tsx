@@ -10,8 +10,8 @@ interface QuizAttempt {
   title: string;
   topic: string;
   difficulty: string;
-  score: int;
-  total: int;
+  score: number;
+  total: number;
   percentage: number;
   feedback: string;
   timestamp: string;

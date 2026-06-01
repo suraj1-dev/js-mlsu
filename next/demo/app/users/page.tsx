@@ -24,7 +24,7 @@ export default function Page() {
     <div>
       <h1 className="text-3xl mb-10 text-green-600">Users</h1>
 
-      {users.map((user, idx) => (
+      {users.map((user: any, idx: number) => (
         <>
           <p className="text-xl text-red-600" key={user.id}>
             {user.name}
