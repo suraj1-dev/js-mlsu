@@ -8,9 +8,25 @@ import os
 import base64
 import tempfile
 import threading
-import speech_recognition as sr
-import pyttsx3
-from gtts import gTTS
+
+# Optional audio imports - app can run without them
+try:
+    import speech_recognition as sr
+    SPEECH_RECOGNITION_AVAILABLE = True
+except ImportError:
+    SPEECH_RECOGNITION_AVAILABLE = False
+
+try:
+    import pyttsx3
+    PYTTSX3_AVAILABLE = True
+except ImportError:
+    PYTTSX3_AVAILABLE = False
+
+try:
+    from gtts import gTTS
+    GTTS_AVAILABLE = True
+except ImportError:
+    GTTS_AVAILABLE = False
 from routers import pdf_rag
 
 # Load env variables
@@ -43,8 +59,8 @@ llm = ChatGoogleGenerativeAI(
 # Store conversation memory
 chat_memory = []
 
-# Speech recognizer instance
-recognizer = sr.Recognizer()
+# Speech recognizer instance (only if available)
+recognizer = sr.Recognizer() if SPEECH_RECOGNITION_AVAILABLE else None
 
 # Thread lock for pyttsx3 engine since it is not thread safe
 tts_lock = threading.Lock()
@@ -53,20 +69,30 @@ def text_to_speech(text: str) -> str:
     """
     Synthesizes the text to an audio file and returns the base64 encoded audio.
     Prioritizes gTTS (MP3) for maximum browser compatibility, falling back to pyttsx3.
+    Returns None if TTS is not available.
     """
+    if not GTTS_AVAILABLE and not PYTTSX3_AVAILABLE:
+        return None
+
     # Try gTTS (MP3) first
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_mp3:
-        mp3_path = temp_mp3.name
-    try:
-        tts = gTTS(text=text, lang="en")
-        tts.save(mp3_path)
-        with open(mp3_path, "rb") as audio_file:
-            audio_data = audio_file.read()
-        base64_audio = base64.b64encode(audio_data).decode("utf-8")
-        return f"data:audio/mp3;base64,{base64_audio}"
-    except Exception as e:
-        print(f"gTTS failed: {e}. Falling back to pyttsx3...")
-        # Fallback to local pyttsx3 (AIFC/WAV depending on OS)
+    if GTTS_AVAILABLE:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_mp3:
+            mp3_path = temp_mp3.name
+        try:
+            tts = gTTS(text=text, lang="en")
+            tts.save(mp3_path)
+            with open(mp3_path, "rb") as audio_file:
+                audio_data = audio_file.read()
+            base64_audio = base64.b64encode(audio_data).decode("utf-8")
+            return f"data:audio/mp3;base64,{base64_audio}"
+        except Exception as e:
+            print(f"gTTS failed: {e}. Falling back to pyttsx3...")
+        finally:
+            if os.path.exists(mp3_path):
+                os.remove(mp3_path)
+
+    # Fallback to local pyttsx3 (AIFC/WAV depending on OS)
+    if PYTTSX3_AVAILABLE:
         with tts_lock:
             with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_wav:
                 wav_path = temp_wav.name
@@ -81,9 +107,8 @@ def text_to_speech(text: str) -> str:
             finally:
                 if os.path.exists(wav_path):
                     os.remove(wav_path)
-    finally:
-        if os.path.exists(mp3_path):
-            os.remove(mp3_path)
+
+    return None
 
 # Request Body
 class ChatRequest(BaseModel):
@@ -113,18 +138,21 @@ def chat(req: ChatRequest):
 # Voice Chat API
 @app.post("/chat/voice")
 async def chat_voice(file: UploadFile = File(...)):
+    if not SPEECH_RECOGNITION_AVAILABLE:
+        raise HTTPException(status_code=503, detail="Speech recognition is not available on this server")
+
     try:
         # Save uploaded file contents to a temp file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_wav:
             contents = await file.read()
             temp_wav.write(contents)
             temp_wav_path = temp_wav.name
-            
+
         try:
             # Transcribe audio using SpeechRecognition
             with sr.AudioFile(temp_wav_path) as source:
                 audio_data = recognizer.record(source)
-            
+
             # Recognizing using Google Speech API
             user_text = recognizer.recognize_google(audio_data)
         except sr.UnknownValueError:
@@ -136,25 +164,24 @@ async def chat_voice(file: UploadFile = File(...)):
         finally:
             if os.path.exists(temp_wav_path):
                 os.remove(temp_wav_path)
-                
+
         # Add user message to memory
         chat_memory.append(HumanMessage(content=user_text))
-        
+
         # Send history to Gemini
         response = llm.invoke(chat_memory)
-        
+
         # Add AI response to memory
         chat_memory.append(AIMessage(content=response.content))
         ai_reply = response.content
-        
+
         # Synthesize reply back to audio (base64)
         audio_base64 = None
         try:
             audio_base64 = text_to_speech(ai_reply)
         except Exception as tts_err:
             print(f"TTS Synthesis error: {tts_err}")
-            
-            #vgg
+
         return {
             "user_text": user_text,
             "response": ai_reply,
